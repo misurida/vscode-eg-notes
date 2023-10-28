@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import NotesExplorer from './NotesExplorer';
 
 export function activate(context: vscode.ExtensionContext) {
 
@@ -8,14 +9,37 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.registerWebviewViewProvider(ColorsViewProvider.viewType, provider));
 
 	context.subscriptions.push(
-		vscode.commands.registerCommand('calicoColors.addColor', () => {
-			provider.addColor();
+		vscode.commands.registerCommand('calicoColors.addNote', () => {
+			provider.addNote();
 		}));
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand('calicoColors.clearColors', () => {
 			provider.clearColors();
 		}));
+
+	const rootPath =
+		vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0
+			? vscode.workspace.workspaceFolders[0].uri.fsPath
+			: undefined;
+
+	if (!rootPath) { return; }
+
+	vscode.window.registerTreeDataProvider(
+		'notesExplorer',
+		new NotesExplorer(rootPath)
+	);
+
+	vscode.window.createTreeView('notesExplorer', {
+		treeDataProvider: new NotesExplorer(rootPath)
+	});
+
+
+	const notesExplorer = new NotesExplorer(rootPath);
+	vscode.window.registerTreeDataProvider('notesExplorer', notesExplorer);
+	vscode.commands.registerCommand('notesExplorer.refreshEntry', () =>
+		notesExplorer.refresh()
+	);
 }
 
 class ColorsViewProvider implements vscode.WebviewViewProvider {
@@ -57,10 +81,10 @@ class ColorsViewProvider implements vscode.WebviewViewProvider {
 		});
 	}
 
-	public addColor() {
+	public addNote() {
 		if (this._view) {
 			this._view.show?.(true); // `show` is not implemented in 1.49 but is for 1.50 insiders
-			this._view.webview.postMessage({ type: 'addColor' });
+			this._view.webview.postMessage({ type: 'addNote' });
 		}
 	}
 
@@ -106,12 +130,14 @@ class ColorsViewProvider implements vscode.WebviewViewProvider {
 				<ul class="color-list">
 				</ul>
 
-				<button class="add-color-button">Add Color</button>
+				<button class="add-color-button">Add Note</button>
 
 				<script nonce="${nonce}" src="${scriptUri}"></script>
 			</body>
 			</html>`;
 	}
+
+
 }
 
 function getNonce() {

@@ -14,16 +14,16 @@
   updateColorList(colors);
 
   document.querySelector('.add-color-button').addEventListener('click', () => {
-    addColor();
+    addNote();
   });
 
   // Handle messages sent from the extension to the webview
   window.addEventListener('message', event => {
     const message = event.data; // The json data that the extension sent
     switch (message.type) {
-      case 'addColor':
+      case 'addNote':
         {
-          addColor();
+          addNote();
           break;
         }
       case 'clearColors':
@@ -92,7 +92,7 @@
     return colors[Math.floor(Math.random() * colors.length)];
   }
 
-  function addColor() {
+  function addNote() {
     colors.push({ value: getNewCalicoColor() });
     updateColorList(colors);
   }

@@ -15,27 +15,47 @@
 	"activationEvents": [],
 	"main": "./out/extension.js",
 	"contributes": {
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "notes-panel",
+					"title": "Notes",
+					"icon": "$(heart)"
+				}
+			]
+		},
 		"views": {
-			"explorer": [
+			"notes-panel": [
 				{
 					"type": "webview",
 					"id": "calicoColors.colorsView",
-					"name": "Calico Colors"
+					"name": "Notes View"
+				},
+				{
+					"id": "notesExplorer",
+					"name": "Notes Explorer",
+					"icon": "media/dep.svg",
+					"contextualTitle": "Notes Explorer",
+					"contents": "No node dependencies found [learn more](https://www.npmjs.com/).\n[Add Dependency](command:nodeDependencies.addEntry)"
 				}
 			]
 		},
 		"commands": [
 			{
-				"command": "calicoColors.addColor",
-				"category": "Calico Colors",
-				"title": "Add Color"
+				"command": "calicoColors.addNote",
+				"category": "Notes",
+				"title": "Add Note"
 			},
 			{
 				"command": "calicoColors.clearColors",
-				"category": "Calico Colors",
-				"title": "Clear Colors",
+				"category": "Notes",
+				"title": "Clear All",
 				"icon": "$(clear-all)"
-			}
+			},
+			{
+        "command": "notesExplorer.refreshEntry",
+        "title": "Refresh my view"
+      }
 		],
 		"menus": {
 			"view/title": [
@@ -43,6 +63,11 @@
 					"command": "calicoColors.clearColors",
 					"group": "navigation",
 					"when": "view == calicoColors.colorsView"
+				},
+				{
+					"command": "notesExplorer.refreshEntry",
+					"when": "view == notesExplorer",
+					"icon": "$(heart)"
 				}
 			]
 		}
@@ -54,6 +79,7 @@
 		"watch": "tsc -w -p ./"
 	},
 	"devDependencies": {
+		"@types/node": "^20.8.9",
 		"@types/vscode": "^1.73.0",
 		"@types/vscode-webview": "^1.57.3",
 		"@typescript-eslint/eslint-plugin": "^6.7.0",
