@@ -4,14 +4,11 @@
 // It cannot access the main VS Code APIs directly.
 (function () {
   // eslint-disable-next-line no-undef
-  const vscode = acquireVsCodeApi();
-
-  const oldState = vscode.getState() || { colors: [] };
-
-  /** @type {Array<{ value: string }>} */
-  let notes = oldState.colors;
-
-  updateNotesList(notes);
+  const webview = acquireVsCodeApi();
+  const localState = webview.getState();
+  let localNotes = localState.notes || []; // get cached state
+  updateNotesList(localNotes);
+  webview.postMessage({ type: 'getState' }); // fetch the exetension saved state
 
   document.querySelector('.add-note-button').addEventListener('click', () => {
     addNote();
@@ -21,15 +18,24 @@
   window.addEventListener('message', event => {
     const message = event.data; // The json data that the extension sent
     switch (message.type) {
+      case 'stateUpdated':
+        {
+          updateNotesList(message.newState);
+          break;
+        }
       case 'addNote':
         {
-          addNote();
+          addNote(message.note);
+          break;
+        }
+      case 'deleteNote':
+        {
+          deleteNote(message.index);
           break;
         }
       case 'clearNotes':
         {
-          notes = [];
-          updateNotesList(notes);
+          updateNotesList([]);
           break;
         }
     }
@@ -65,22 +71,21 @@
         } else {
           note.value = value;
         }
-        updateNotesList(notes);
+        webview.postMessage({ type: 'updateState', newState: localNotes });
       });
       li.appendChild(input);
-
       ul.appendChild(li);
     }
 
-    // Update the saved state
-    vscode.setState({ colors: notes });
+    localNotes = notes;
+    webview.setState({ notes: notes }); // cached state
   }
 
   /** 
    * @param {string} note 
    */
   function onNoteClicked(note) {
-    vscode.postMessage({ type: 'noteSelected', value: note });
+    webview.postMessage({ type: 'noteSelected', value: note });
   }
 
   /**
@@ -91,9 +96,14 @@
     return colors[Math.floor(Math.random() * colors.length)];
   }
 
-  function addNote() {
-    notes.push({ value: getNewColor() });
-    updateNotesList(notes);
+  function addNote(note) {
+    localNotes.push(note);
+    webview.postMessage({ type: 'updateState', newState: localNotes });
+  }
+
+  function deleteNote(index) {
+    localNotes.splice(index, 1);
+    webview.postMessage({ type: 'updateState', newState: localNotes });
   }
 }());
 

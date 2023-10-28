@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { Note } from './extension';
 
 
 export default class NotesViewProvider implements vscode.WebviewViewProvider {
@@ -6,10 +7,15 @@ export default class NotesViewProvider implements vscode.WebviewViewProvider {
 	public static readonly viewType = 'egNotes.notesView';
 
 	private _view?: vscode.WebviewView;
+	private readonly _extensionContext: vscode.ExtensionContext;
+	private readonly _extensionUri: vscode.Uri;
 
-	constructor(
-		private readonly _extensionUri: vscode.Uri,
-	) { }
+
+	constructor(extensionContext: vscode.ExtensionContext) {
+		this._extensionContext = extensionContext;
+		this._extensionUri = extensionContext.extensionUri;
+	}
+
 
 	public resolveWebviewView(
 		webviewView: vscode.WebviewView,
@@ -29,8 +35,20 @@ export default class NotesViewProvider implements vscode.WebviewViewProvider {
 
 		webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
 
-		webviewView.webview.onDidReceiveMessage(data => {
+		webviewView.webview.onDidReceiveMessage(async data => {
 			switch (data.type) {
+				case 'getState':
+					{
+						const lastState = this._extensionContext.globalState.get('egNotes.notes');
+						webviewView.webview.postMessage({ type: 'stateUpdated', newState: lastState });
+						break;
+					}
+				case 'updateState':
+					{
+						await this._extensionContext.globalState.update('egNotes.notes', data.newState);
+						webviewView.webview.postMessage({ type: 'stateUpdated', newState: data.newState });
+						break;
+					}
 				case 'noteSelected':
 					{
 						vscode.window.activeTextEditor?.insertSnippet(new vscode.SnippetString(`#${data.value}`));
@@ -40,10 +58,11 @@ export default class NotesViewProvider implements vscode.WebviewViewProvider {
 		});
 	}
 
-	public addNote() {
+	public addNote(note?: Note) {
 		if (this._view) {
 			this._view.show?.(true); // `show` is not implemented in 1.49 but is for 1.50 insiders
-			this._view.webview.postMessage({ type: 'addNote' });
+			this._view.webview.postMessage({ type: 'addNote', note });
+			this._view.webview.html = this._getHtmlForWebview(this._view.webview);
 		}
 	}
 
@@ -52,6 +71,8 @@ export default class NotesViewProvider implements vscode.WebviewViewProvider {
 			this._view.webview.postMessage({ type: 'clearNotes' });
 		}
 	}
+
+
 
 	private _getHtmlForWebview(webview: vscode.Webview) {
 		// Get the local path to main script run in the webview, then convert it to a uri we can use in the webview.

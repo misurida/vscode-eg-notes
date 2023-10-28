@@ -3,12 +3,11 @@
 	"description": "EG Notes",
 	"version": "0.0.1",
 	"private": true,
+	"publisher": "eglab",
 	"engines": {
 		"vscode": "^1.74.0"
 	},
-	"activationEvents": [
-		"onWebviewPanel:egNotes"
-	],
+	"activationEvents": [],
 	"main": "./out/extension.js",
 	"contributes": {
 		"viewsContainers": {
@@ -16,22 +15,20 @@
 				{
 					"id": "notes-panel",
 					"title": "Notes",
-					"icon": "$(heart)"
+					"icon": "$(output)"
 				}
 			]
 		},
 		"views": {
 			"notes-panel": [
 				{
-					"type": "webview",
-					"id": "egNotes.notesView",
-					"name": "Notes View"
+					"id": "egNotes.notesExplorer",
+					"name": "Simple List",
+					"contents": "No note found.\n[Add Note](command:egNotes.addNote)"
 				},
 				{
-					"id": "egNotes.notesExplorer",
-					"name": "Notes Explorer",
-					"icon": "media/dep.svg",
-					"contextualTitle": "Notes Explorer",
+					"id": "egNotes.notesView",
+					"name": "View",
 					"contents": "No note found.\n[Add Note](command:egNotes.addNote)"
 				}
 			]
@@ -39,21 +36,83 @@
 		"commands": [
 			{
 				"command": "egNotes.addNote",
-				"category": "Notes",
-				"title": "Add Note"
+				"title": "Add Note",
+				"icon": "$(plus)",
+				"category": "Notes"
+			},
+			{
+				"command": "egNotes.addNoteFromSelection",
+				"title": "Add Note From Selection",
+				"icon": "$(plus)",
+				"category": "Notes"
+			},
+			{
+				"command": "egNotes.addNoteFromClipboard",
+				"title": "Add Note From Clipboard",
+				"icon": "$(plus)",
+				"category": "Notes"
+			},
+			{
+				"command": "egNotes.copyNoteValue",
+				"title": "Copy Note",
+				"icon": "$(copy)",
+				"category": "Notes"
+			},
+			{
+				"command": "egNotes.deleteNote",
+				"title": "Delete Note",
+				"icon": "$(trash)",
+				"category": "Notes"
+			},
+			{
+				"command": "egNotes.editNote",
+				"title": "Edit Note",
+				"icon": "$(edit)",
+				"category": "Notes"
 			},
 			{
 				"command": "egNotes.clearNotes",
-				"category": "Notes",
-				"title": "Clear All",
-				"icon": "$(clear-all)"
+				"title": "Clear All Notes",
+				"icon": "$(clear-all)",
+				"category": "Notes"
 			},
 			{
 				"command": "egNotes.refreshEntry",
-				"title": "Refresh my view"
+				"title": "Refresh the list",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "egNotes.searchNotes",
+				"title": "Search",
+				"icon": "$(search)",
+				"category": "Notes"
+			},
+			{
+				"command": "egNotes.searchNotesClear",
+				"title": "Clear Search",
+				"icon": "$(search-stop)",
+				"category": "Notes"
 			}
 		],
 		"menus": {
+			"commandPalette": [
+				{
+					"command": "egNotes.addNoteFromSelection",
+					"when": "false"
+				},
+				{
+					"command": "egNotes.copyNoteValue",
+					"when": "false"
+				},
+				{
+					"command": "egNotes.deleteNote",
+					"when": "false"
+				},
+				{
+					"command": "egNotes.editNote",
+					"when": "false"
+				}
+			],
 			"view/title": [
 				{
 					"command": "egNotes.clearNotes",
@@ -61,9 +120,64 @@
 					"when": "view == egNotes.notesView"
 				},
 				{
+					"command": "egNotes.clearNotes",
+					"icon": "$(refresh)",
+					"when": "view == egNotes.notesExplorer"
+				},
+				{
+					"command": "egNotes.searchNotesClear",
+					"icon": "$(search-stop)",
+					"when": "view == egNotes.notesExplorer"
+				},
+				{
 					"command": "egNotes.refreshEntry",
-					"when": "view == notesExplorer",
-					"icon": "$(heart)"
+					"icon": "$(refresh)",
+					"when": "view == egNotes.notesExplorer"
+				},
+				{
+					"command": "egNotes.addNoteFromClipboard",
+					"icon": "$(add)",
+					"when": "view == egNotes.notesExplorer"
+				},
+				{
+					"command": "egNotes.addNote",
+					"group": "navigation",
+					"icon": "$(add)",
+					"when": "view == egNotes.notesExplorer"
+				},
+				{
+					"command": "egNotes.searchNotes",
+					"group": "navigation",
+					"icon": "$(search)",
+					"when": "view == egNotes.notesExplorer"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "egNotes.editNote",
+					"when": "view == egNotes.notesExplorer && viewItem == note",
+					"group": "inline"
+				},
+				{
+					"command": "egNotes.copyNoteValue",
+					"when": "view == egNotes.notesExplorer && viewItem == note",
+					"group": "inline"
+				},
+				{
+					"command": "egNotes.deleteNote",
+					"when": "view == egNotes.notesExplorer && viewItem == note",
+					"group": "inline"
+				},
+				{
+					"command": "egNotes.searchNotesClear",
+					"when": "view == egNotes.notesExplorer && viewItem == placeholder",
+					"group": "inline"
+				}
+			],
+			"editor/context": [
+				{
+					"command": "egNotes.addNoteFromSelection",
+					"group": "navigation"
 				}
 			]
 		}
@@ -81,6 +195,7 @@
 		"@typescript-eslint/eslint-plugin": "^6.7.0",
 		"@typescript-eslint/parser": "^6.7.0",
 		"eslint": "^8.32.0",
+		"fuse.js": "^7.0.0",
 		"typescript": "^5.2.2"
 	}
 }
