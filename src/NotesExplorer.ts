@@ -4,6 +4,7 @@ import * as path from 'path';
 
 export default class DepNodeProvider implements vscode.TreeDataProvider<Dependency> {
 
+  public static readonly viewType = 'egNotes.notesExplorer';
   private _onDidChangeTreeData: vscode.EventEmitter<Dependency | undefined | void> = new vscode.EventEmitter<Dependency | undefined | void>();
   readonly onDidChangeTreeData: vscode.Event<Dependency | undefined | void> = this._onDidChangeTreeData.event;
 

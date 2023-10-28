@@ -2,17 +2,13 @@
 	"name": "eg-notes",
 	"description": "EG Notes",
 	"version": "0.0.1",
-	"publisher": "vscode-samples",
 	"private": true,
-	"license": "MIT",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/Microsoft/vscode-extension-samples"
-	},
 	"engines": {
 		"vscode": "^1.74.0"
 	},
-	"activationEvents": [],
+	"activationEvents": [
+		"onWebviewPanel:egNotes"
+	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"viewsContainers": {
@@ -32,11 +28,11 @@
 					"name": "Notes View"
 				},
 				{
-					"id": "notesExplorer",
+					"id": "egNotes.notesExplorer",
 					"name": "Notes Explorer",
 					"icon": "media/dep.svg",
 					"contextualTitle": "Notes Explorer",
-					"contents": "No node dependencies found [learn more](https://www.npmjs.com/).\n[Add Dependency](command:nodeDependencies.addEntry)"
+					"contents": "No note found.\n[Add Note](command:egNotes.addNote)"
 				}
 			]
 		},
@@ -53,9 +49,9 @@
 				"icon": "$(clear-all)"
 			},
 			{
-        "command": "notesExplorer.refreshEntry",
-        "title": "Refresh my view"
-      }
+				"command": "egNotes.refreshEntry",
+				"title": "Refresh my view"
+			}
 		],
 		"menus": {
 			"view/title": [
@@ -65,7 +61,7 @@
 					"when": "view == egNotes.notesView"
 				},
 				{
-					"command": "notesExplorer.refreshEntry",
+					"command": "egNotes.refreshEntry",
 					"when": "view == notesExplorer",
 					"icon": "$(heart)"
 				}

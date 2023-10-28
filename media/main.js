@@ -6,10 +6,10 @@
   // eslint-disable-next-line no-undef
   const vscode = acquireVsCodeApi();
 
-  const oldState = vscode.getState() || { notes: [] };
+  const oldState = vscode.getState() || { colors: [] };
 
   /** @type {Array<{ value: string }>} */
-  let notes = oldState.notes;
+  let notes = oldState.colors;
 
   updateNotesList(notes);
 
@@ -32,7 +32,6 @@
           updateNotesList(notes);
           break;
         }
-
     }
   });
 
@@ -74,7 +73,7 @@
     }
 
     // Update the saved state
-    vscode.setState({ notes: notes });
+    vscode.setState({ colors: notes });
   }
 
   /** 
