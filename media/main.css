@@ -2,29 +2,29 @@ body {
 	background-color: transparent;
 }
 
-.color-list {
+.notes-list {
 	list-style: none;
 	padding: 0;
 	margin-top: 10px;
 }
 
-.color-entry {
+.note-entry {
 	width: 100%;
 	display: flex;
 	margin-bottom: 0.4em;
 	border: 1px solid var(--vscode-input-border);
 }
 
-.color-preview {
+.note-preview {
 	width: 2em;
 	height: 2em;
 }
 
-.color-preview:hover {
+.note-preview:hover {
 	outline: inset white;
 }
 
-.color-input {
+.note-input {
 	display: block;
 	flex: 1;
 	width: 100%;
@@ -34,7 +34,7 @@ body {
 	padding: 0 0.6em;
 }
 
-.add-color-button {
+.add-note-button {
 	display: block;
 	border: none;
 	margin: 0 auto;

@@ -3,19 +3,19 @@ import NotesExplorer from './NotesExplorer';
 
 export function activate(context: vscode.ExtensionContext) {
 
-	const provider = new ColorsViewProvider(context.extensionUri);
+	const provider = new notesViewProvider(context.extensionUri);
 
 	context.subscriptions.push(
-		vscode.window.registerWebviewViewProvider(ColorsViewProvider.viewType, provider));
+		vscode.window.registerWebviewViewProvider(notesViewProvider.viewType, provider));
 
 	context.subscriptions.push(
-		vscode.commands.registerCommand('calicoColors.addNote', () => {
+		vscode.commands.registerCommand('egNotes.addNote', () => {
 			provider.addNote();
 		}));
 
 	context.subscriptions.push(
-		vscode.commands.registerCommand('calicoColors.clearColors', () => {
-			provider.clearColors();
+		vscode.commands.registerCommand('egNotes.clearNotes', () => {
+			provider.clearNotes();
 		}));
 
 	const rootPath =
@@ -42,9 +42,9 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 }
 
-class ColorsViewProvider implements vscode.WebviewViewProvider {
+class notesViewProvider implements vscode.WebviewViewProvider {
 
-	public static readonly viewType = 'calicoColors.colorsView';
+	public static readonly viewType = 'egNotes.notesView';
 
 	private _view?: vscode.WebviewView;
 
@@ -72,7 +72,7 @@ class ColorsViewProvider implements vscode.WebviewViewProvider {
 
 		webviewView.webview.onDidReceiveMessage(data => {
 			switch (data.type) {
-				case 'colorSelected':
+				case 'noteSelected':
 					{
 						vscode.window.activeTextEditor?.insertSnippet(new vscode.SnippetString(`#${data.value}`));
 						break;
@@ -88,9 +88,9 @@ class ColorsViewProvider implements vscode.WebviewViewProvider {
 		}
 	}
 
-	public clearColors() {
+	public clearNotes() {
 		if (this._view) {
-			this._view.webview.postMessage({ type: 'clearColors' });
+			this._view.webview.postMessage({ type: 'clearNotes' });
 		}
 	}
 
@@ -124,13 +124,13 @@ class ColorsViewProvider implements vscode.WebviewViewProvider {
 				<link href="${styleVSCodeUri}" rel="stylesheet">
 				<link href="${styleMainUri}" rel="stylesheet">
 
-				<title>Cat Colors</title>
+				<title>Notes View</title>
 			</head>
 			<body>
-				<ul class="color-list">
+				<ul class="notes-list">
 				</ul>
 
-				<button class="add-color-button">Add Note</button>
+				<button class="add-note-button">Add Note</button>
 
 				<script nonce="${nonce}" src="${scriptUri}"></script>
 			</body>

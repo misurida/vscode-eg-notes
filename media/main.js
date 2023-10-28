@@ -6,14 +6,14 @@
   // eslint-disable-next-line no-undef
   const vscode = acquireVsCodeApi();
 
-  const oldState = vscode.getState() || { colors: [] };
+  const oldState = vscode.getState() || { notes: [] };
 
   /** @type {Array<{ value: string }>} */
-  let colors = oldState.colors;
+  let notes = oldState.notes;
 
-  updateColorList(colors);
+  updateNotesList(notes);
 
-  document.querySelector('.add-color-button').addEventListener('click', () => {
+  document.querySelector('.add-note-button').addEventListener('click', () => {
     addNote();
   });
 
@@ -26,10 +26,10 @@
           addNote();
           break;
         }
-      case 'clearColors':
+      case 'clearNotes':
         {
-          colors = [];
-          updateColorList(colors);
+          notes = [];
+          updateNotesList(notes);
           break;
         }
 
@@ -37,36 +37,36 @@
   });
 
   /**
-   * @param {Array<{ value: string }>} colors
+   * @param {Array<{ value: string }>} notes
    */
-  function updateColorList(colors) {
-    const ul = document.querySelector('.color-list');
+  function updateNotesList(notes) {
+    const ul = document.querySelector('.notes-list');
     ul.textContent = '';
-    for (const color of colors) {
+    for (const note of notes) {
       const li = document.createElement('li');
-      li.className = 'color-entry';
+      li.className = 'note-entry';
 
-      const colorPreview = document.createElement('div');
-      colorPreview.className = 'color-preview';
-      colorPreview.style.backgroundColor = `#${color.value}`;
-      colorPreview.addEventListener('click', () => {
-        onColorClicked(color.value);
+      const notePreview = document.createElement('div');
+      notePreview.className = 'note-preview';
+      notePreview.style.backgroundColor = `#${note.value}`;
+      notePreview.addEventListener('click', () => {
+        onNoteClicked(note.value);
       });
-      li.appendChild(colorPreview);
+      li.appendChild(notePreview);
 
       const input = document.createElement('input');
-      input.className = 'color-input';
+      input.className = 'note-input';
       input.type = 'text';
-      input.value = color.value;
+      input.value = note.value;
       input.addEventListener('change', (e) => {
         const value = e.target.value;
         if (!value) {
           // Treat empty value as delete
-          colors.splice(colors.indexOf(color), 1);
+          notes.splice(notes.indexOf(note), 1);
         } else {
-          color.value = value;
+          note.value = value;
         }
-        updateColorList(colors);
+        updateNotesList(notes);
       });
       li.appendChild(input);
 
@@ -74,27 +74,27 @@
     }
 
     // Update the saved state
-    vscode.setState({ colors: colors });
+    vscode.setState({ notes: notes });
   }
 
   /** 
-   * @param {string} color 
+   * @param {string} note 
    */
-  function onColorClicked(color) {
-    vscode.postMessage({ type: 'colorSelected', value: color });
+  function onNoteClicked(note) {
+    vscode.postMessage({ type: 'noteSelected', value: note });
   }
 
   /**
    * @returns string
    */
-  function getNewCalicoColor() {
+  function getNewColor() {
     const colors = ['020202', 'f1eeee', 'a85b20', 'daab70', 'efcb99'];
     return colors[Math.floor(Math.random() * colors.length)];
   }
 
   function addNote() {
-    colors.push({ value: getNewCalicoColor() });
-    updateColorList(colors);
+    notes.push({ value: getNewColor() });
+    updateNotesList(notes);
   }
 }());
 

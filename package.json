@@ -1,6 +1,6 @@
 {
 	"name": "eg-notes",
-	"description": "EG Colors",
+	"description": "EG Notes",
 	"version": "0.0.1",
 	"publisher": "vscode-samples",
 	"private": true,
@@ -28,7 +28,7 @@
 			"notes-panel": [
 				{
 					"type": "webview",
-					"id": "calicoColors.colorsView",
+					"id": "egNotes.notesView",
 					"name": "Notes View"
 				},
 				{
@@ -42,12 +42,12 @@
 		},
 		"commands": [
 			{
-				"command": "calicoColors.addNote",
+				"command": "egNotes.addNote",
 				"category": "Notes",
 				"title": "Add Note"
 			},
 			{
-				"command": "calicoColors.clearColors",
+				"command": "egNotes.clearNotes",
 				"category": "Notes",
 				"title": "Clear All",
 				"icon": "$(clear-all)"
@@ -60,9 +60,9 @@
 		"menus": {
 			"view/title": [
 				{
-					"command": "calicoColors.clearColors",
+					"command": "egNotes.clearNotes",
 					"group": "navigation",
-					"when": "view == calicoColors.colorsView"
+					"when": "view == egNotes.notesView"
 				},
 				{
 					"command": "notesExplorer.refreshEntry",
