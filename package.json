@@ -5,6 +5,7 @@
 	"version": "0.0.1",
 	"publisher": "misurida",
 	"license": "MIT",
+	"pricing": "Free",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/misurida/vscode-eg-notes"
@@ -46,11 +47,6 @@
 					"id": "egNotes.notesExplorer",
 					"name": "Simple List",
 					"contents": "No note found.\n[Add Note](command:egNotes.addNote)"
-				},
-				{
-					"type": "webview",
-					"id": "egNotes.notesView",
-					"name": "Notes View"
 				}
 			]
 		},
