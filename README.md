@@ -1,71 +1,36 @@
-# eg-notes README
+# EG Notes: Easy Note-Taking in VS Code
 
-This is the README for your extension "eg-notes". After writing up a brief description, we recommend including the following sections.
+## Overview
+
+EG Notes is a Visual Studio Code extension designed to streamline your note-taking experience right within your development environment. With a simple and intuitive interface, users can create, edit, view, and manage their notes without ever having to leave VS Code.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- **Tree View**: Quickly access all your notes from the dedicated tree view panel.
+- **Create and Edit**: Instantly create and edit notes, with changes saved automatically to the global state.
+- **Search and Filter**: Easily find the note you’re looking for with search and filter capabilities.
+- **Lightweight**: EG Notes is designed to be lightweight and performant, ensuring a seamless note-taking experience.
 
-For example if there is an image subfolder under your extension project workspace:
+## Getting Started
 
-\!\[feature X\]\(images/feature-x.png\)
+1. **Installation**: Install the EG Notes extension from the Visual Studio Code Marketplace.
+2. **Create a Note**: The most straightforward method to create a note is by highlighting the desired text and utilizing the "Add Note From Selection" option from the context menu.
+3. **Save and Close**: After finishing, assign a title to your note for effortless retrieval, and it will be immediately saved upon pressing enter.
+4. **View Notes**: All your notes are listed in the tree view. Click on a note to open and edit it using the editor.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+## Configuration
 
-## Requirements
+EG Notes works out of the box with no custom configuration. 
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
 
-## Extension Settings
+## Contributing
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+We welcome contributions to EG Notes! If you have ideas for features, improvements, or have found a bug, please open an issue or submit a pull request.
 
-For example:
+## License
 
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+EG Notes is released under the MIT License.
 
 ---
 
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+Happy Note-Taking!

@@ -1,9 +1,29 @@
 {
 	"name": "eg-notes",
-	"description": "EG Notes",
+	"displayName": "EG Notes",
+	"description": "A Simple note taking extension for VS Code",
 	"version": "0.0.1",
-	"private": true,
-	"publisher": "eglab",
+	"publisher": "misurida",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/misurida/vscode-eg-notes"
+	},
+	"categories": [
+		"Snippets",
+		"Other"
+	],
+	"keywords": [
+		"notes",
+		"simple",
+		"list",
+		"quick",
+		"clipboard"
+	],
+	"author": {
+		"name": "Erwan Guyomarch",
+		"email": "erwan.guyomarch@gmail.com"
+	},
 	"engines": {
 		"vscode": "^1.74.0"
 	},
