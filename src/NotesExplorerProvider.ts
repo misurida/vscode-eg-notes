@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
-import { Note } from './extension';
+import { Note } from './NoteService';
 
-export default class NotesExplorer implements vscode.TreeDataProvider<NoteItem> {
+export default class NotesExplorerProvider implements vscode.TreeDataProvider<NoteItem> {
 
   public static readonly viewType = 'egNotes.notesExplorer';
 
@@ -32,7 +32,7 @@ export default class NotesExplorer implements vscode.TreeDataProvider<NoteItem> 
       if (notes.length === 0 && q) {
         return Promise.resolve([new NoteItem(
           "No notes found...",
-          q,
+          `"${q}"`,
           "placeholder",
           vscode.TreeItemCollapsibleState.None
         )]);
@@ -43,7 +43,7 @@ export default class NotesExplorer implements vscode.TreeDataProvider<NoteItem> 
         note.id,
         vscode.TreeItemCollapsibleState.None,
         {
-          command: 'egNotes.editNote',
+          command: 'egNotes.openNote',
           title: 'Edit note',
           arguments: [note, index]
         }
@@ -68,8 +68,6 @@ export class NoteItem extends vscode.TreeItem {
     this.description = this.value;
     // this.iconPath = vscode.ThemeIcon.File;
   }
-
-
 
   contextValue = this.id === "placeholder" ? "placeholder" : 'note';
 }

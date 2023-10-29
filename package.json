@@ -22,14 +22,15 @@
 		"views": {
 			"notes-panel": [
 				{
+					"type": "tree",
 					"id": "egNotes.notesExplorer",
 					"name": "Simple List",
 					"contents": "No note found.\n[Add Note](command:egNotes.addNote)"
 				},
 				{
+					"type": "webview",
 					"id": "egNotes.notesView",
-					"name": "View",
-					"contents": "No note found.\n[Add Note](command:egNotes.addNote)"
+					"name": "Notes View"
 				}
 			]
 		},
@@ -66,7 +67,7 @@
 			},
 			{
 				"command": "egNotes.editNote",
-				"title": "Edit Note",
+				"title": "Quick Edit",
 				"icon": "$(edit)",
 				"category": "Notes"
 			},
@@ -116,40 +117,35 @@
 			"view/title": [
 				{
 					"command": "egNotes.clearNotes",
-					"group": "navigation",
-					"when": "view == egNotes.notesView"
-				},
-				{
-					"command": "egNotes.clearNotes",
 					"icon": "$(refresh)",
-					"when": "view == egNotes.notesExplorer"
+					"when": "view == egNotes.notesExplorer || view == egNotes.notesView"
 				},
 				{
 					"command": "egNotes.searchNotesClear",
 					"icon": "$(search-stop)",
-					"when": "view == egNotes.notesExplorer"
+					"when": "view == egNotes.notesExplorer || view == egNotes.notesView"
 				},
 				{
 					"command": "egNotes.refreshEntry",
 					"icon": "$(refresh)",
-					"when": "view == egNotes.notesExplorer"
+					"when": "view == egNotes.notesExplorer || view == egNotes.notesView"
 				},
 				{
 					"command": "egNotes.addNoteFromClipboard",
 					"icon": "$(add)",
-					"when": "view == egNotes.notesExplorer"
+					"when": "view == egNotes.notesExplorer || view == egNotes.notesView"
 				},
 				{
 					"command": "egNotes.addNote",
 					"group": "navigation",
 					"icon": "$(add)",
-					"when": "view == egNotes.notesExplorer"
+					"when": "view == egNotes.notesExplorer || view == egNotes.notesView"
 				},
 				{
 					"command": "egNotes.searchNotes",
 					"group": "navigation",
 					"icon": "$(search)",
-					"when": "view == egNotes.notesExplorer"
+					"when": "view == egNotes.notesExplorer || view == egNotes.notesView"
 				}
 			],
 			"view/item/context": [

@@ -15,7 +15,6 @@ export class SearchForm {
 		return await this.inputQuery();
 	}
 
-
 	private async inputQuery() {
 		const box = vscode.window.createInputBox();
 		box.title = 'Search notes';
@@ -34,6 +33,5 @@ export class SearchForm {
 			box.show();
 		});
 	}
-
 
 }

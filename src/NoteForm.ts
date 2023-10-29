@@ -1,5 +1,5 @@
 import { QuickInputButtons, window } from "vscode";
-import { Note } from "./extension";
+import { Note } from "./NoteService";
 
 
 export class NoteForm {
@@ -26,7 +26,6 @@ export class NoteForm {
 			id: new Date().getTime().toString(),
 		};
 	}
-
 
 	private async inputLabel(step: number, maxStep: number) {
 		const box = window.createInputBox();
