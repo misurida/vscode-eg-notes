@@ -10,14 +10,21 @@ export class NoteForm {
 		value: ''
 	};
 
-	constructor(note?: Partial<Note>) {
+	constructor(note?: Partial<Note>, private onlyLabel?: boolean) {
 		if (note?.label) this.note.label = note.label;
 		if (note?.value) this.note.value = note.value;
 		if (note?.id) this.note.id = note.id;
 	}
 
 	public async show() {
-		if (!this.note.value || !!this.note.id) {
+		if (this.onlyLabel) {
+			await this.inputLabel();
+			return {
+				...this.note,
+				id: this.note.id || new Date().getTime().toString(),
+			};
+		}
+		else if ((!this.note.value || !!this.note.id)) {
 			await this.inputNote(1, 2);
 		}
 		await this.inputLabel(2, 2);
@@ -27,7 +34,7 @@ export class NoteForm {
 		};
 	}
 
-	private async inputLabel(step: number, maxStep: number) {
+	private async inputLabel(step?: number, maxStep?: number) {
 		const box = window.createInputBox();
 		box.title = 'Note label';
 		box.value = this.note.label;

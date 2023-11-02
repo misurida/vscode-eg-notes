@@ -2,7 +2,7 @@
 	"name": "eg-notes",
 	"displayName": "EG Notes",
 	"description": "A Simple note taking extension for VS Code",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"publisher": "misurida",
 	"license": "MIT",
 	"pricing": "Free",
@@ -28,24 +28,23 @@
 	"engines": {
 		"vscode": "^1.74.0"
 	},
-	"activationEvents": [],
+	"activationEvents": [
+		"onWebviewPanel:egNotes"
+	],
 	"main": "./out/extension.js",
 	"contributes": {
-		"viewsContainers": {
-			"activitybar": [
-				{
-					"id": "notes-panel",
-					"title": "Notes",
-					"icon": "$(output)"
-				}
-			]
-		},
+		"viewsWelcome": [
+			{
+				"view": "egNotes.notesExplorer",
+				"contents": "You don't have any notes at the moment. Create your first note:\n[Add Note](command:egNotes.addNote)"
+			}
+		],
 		"views": {
-			"notes-panel": [
+			"explorer": [
 				{
 					"type": "tree",
 					"id": "egNotes.notesExplorer",
-					"name": "Simple List",
+					"name": "Notes",
 					"contents": "No note found.\n[Add Note](command:egNotes.addNote)"
 				}
 			]
@@ -54,6 +53,12 @@
 			{
 				"command": "egNotes.addNote",
 				"title": "Add Note",
+				"icon": "$(plus)",
+				"category": "Notes"
+			},
+			{
+				"command": "egNotes.addQuickNote",
+				"title": "Add Quick Note",
 				"icon": "$(plus)",
 				"category": "Notes"
 			},
@@ -84,6 +89,12 @@
 			{
 				"command": "egNotes.editNote",
 				"title": "Quick Edit",
+				"icon": "$(edit)",
+				"category": "Notes"
+			},
+			{
+				"command": "egNotes.renameNote",
+				"title": "Rename Note",
 				"icon": "$(edit)",
 				"category": "Notes"
 			},
@@ -149,13 +160,20 @@
 				{
 					"command": "egNotes.addNoteFromClipboard",
 					"icon": "$(add)",
-					"when": "view == egNotes.notesExplorer || view == egNotes.notesView"
+					"when": "view == egNotes.notesExplorer || view == egNotes.notesView",
+					"group": "Add"
 				},
 				{
 					"command": "egNotes.addNote",
-					"group": "navigation",
 					"icon": "$(add)",
-					"when": "view == egNotes.notesExplorer || view == egNotes.notesView"
+					"when": "view == egNotes.notesExplorer || view == egNotes.notesView",
+					"group": "Add"
+				},
+				{
+					"command": "egNotes.addQuickNote",
+					"icon": "$(add)",
+					"when": "view == egNotes.notesExplorer || view == egNotes.notesView",
+					"group": "Add"
 				},
 				{
 					"command": "egNotes.searchNotes",
@@ -166,24 +184,24 @@
 			],
 			"view/item/context": [
 				{
-					"command": "egNotes.editNote",
+					"command": "egNotes.renameNote",
 					"when": "view == egNotes.notesExplorer && viewItem == note",
-					"group": "inline"
+					"group": "inline@1"
 				},
 				{
 					"command": "egNotes.copyNoteValue",
 					"when": "view == egNotes.notesExplorer && viewItem == note",
-					"group": "inline"
+					"group": "inline@2"
 				},
 				{
 					"command": "egNotes.deleteNote",
 					"when": "view == egNotes.notesExplorer && viewItem == note",
-					"group": "inline"
+					"group": "inline@3"
 				},
 				{
 					"command": "egNotes.searchNotesClear",
 					"when": "view == egNotes.notesExplorer && viewItem == placeholder",
-					"group": "inline"
+					"group": "inline@4"
 				}
 			],
 			"editor/context": [

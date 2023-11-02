@@ -26,6 +26,8 @@ export function activate(context: vscode.ExtensionContext) {
 		notesExplorer.refresh();
 	}
 
+
+
 	// Commands
 
 	context.subscriptions.push(vscode.commands.registerCommand('egNotes.refreshEntry', () =>
@@ -33,6 +35,18 @@ export function activate(context: vscode.ExtensionContext) {
 	));
 
 	context.subscriptions.push(vscode.commands.registerCommand('egNotes.addNote', async () => {
+		const note = await new NoteForm(undefined, true).show();
+		await noteService.addNote(note);
+		if (note) {
+			const uri = vscode.Uri.parse(`note:/${note.id}.note`);
+			await fileSystemProvider.writeFile(uri, new TextEncoder().encode(note.value), { create: true, overwrite: true });
+			const doc = await vscode.workspace.openTextDocument(uri);
+			await vscode.window.showTextDocument(doc, { preview: false });
+			refreshAll();
+		}
+	}));
+
+	context.subscriptions.push(vscode.commands.registerCommand('egNotes.addQuickNote', async () => {
 		const res = await new NoteForm().show();
 		await noteService.addNote(res);
 		refreshAll();
@@ -76,11 +90,21 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	}));
 
+	context.subscriptions.push(vscode.commands.registerCommand('egNotes.renameNote', async (noteItem: NoteItem) => {
+		const note = noteService.getNote(noteItem.id);
+		if (note) {
+			const res = await new NoteForm(note, true).show();
+			noteService.updateNote(res);
+			refreshAll();
+		}
+	}));
+
 	context.subscriptions.push(vscode.commands.registerCommand('egNotes.copyNoteValue', async (noteItem?: NoteItem) => {
 		if (noteItem) {
 			const note = noteService.getNote(noteItem.id);
 			if (note) {
 				vscode.env.clipboard.writeText(note.value);
+				vscode.window.showInformationMessage('Note copied!');
 			}
 			else {
 				vscode.window.showInformationMessage('No note found.');

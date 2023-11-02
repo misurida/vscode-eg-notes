@@ -20,7 +20,8 @@ EG Notes is a Visual Studio Code extension designed to streamline your note-taki
 
 ## Configuration
 
-EG Notes works out of the box with no custom configuration. 
+EG Notes is designed to be hassle-free with no custom configuration required.
+
 
 
 ## Contributing
